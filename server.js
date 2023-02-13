@@ -47,7 +47,7 @@ app.post('/products/add',async(req,res)=>{
         productId:req.body.id,
         name:req.body.name,
         price:req.body.price,
-        featured:   Boolean(req.body.featured),
+        featured:   (req.body.featured==='true'),
         rating:req.body.rating,
         createdAt:req.body.createdAt,
         company:req.body.company
