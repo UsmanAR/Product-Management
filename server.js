@@ -126,7 +126,10 @@ app.delete('/products/:id', async (req, res) => {
 app.get('/products/featured', async (req, res) => {
   try {
     const products = await Product.find({ featured: true });
-    res.json(products);
+    res.render("main",{
+        products:products
+    })
+    //res.json(products);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
