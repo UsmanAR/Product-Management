@@ -11,5 +11,10 @@
     "url": "."
   },
   "author": "Usman AR",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^6.9.1",
+    "product": "^1.2.2"
+  }
 }

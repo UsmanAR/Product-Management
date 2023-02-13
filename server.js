@@ -1,10 +1,14 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const Product = require('./product');
-
+const Product = require('./schema');
+const port =  process.env.PORT || 5000;
 const app = express();
+const mongoose = require('mongoose');
+const product = require('product');
+
 app.use(bodyParser.json());
+
+
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost/products', {
@@ -25,39 +29,69 @@ app.post('/products', async (req, res) => {
   }
 });
 
-// Get all products
-app.get('/products', async (req, res) => {
-  try {
-    const products = await Product.find();
+
+
+
+ // Fetch products with less than certain price 
+ app.get('/products/',async (req,res)=>{
+    try{
+    var products;
+    const price = req.query.price;
+    const rating = req.query.rating;
+    console.log("Price is " + price)
+    if(price!=undefined&&rating!=undefined){
+     products = await Product.find({price:{$lt:price},rating:{$gt:rating}})
+    }
+    else if(rating!=undefined){
+     products = await Product.find({rating:{$gt:req.params.price}});
+    }
+    else if(products!=undefined){
+     products = await Product.find({price:{$lt:rating}})
+    }
+    else {
+         products=await Product.find();
+    }
+    
     res.json(products);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
+    }
+    catch(err){
+        res.status(500).json({message:err.message});
+    }
+})
+
 
 // Update a product
 app.patch('/products/:id', async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
-    if (req.body.productId) {
-      product.productId = req.body.productId;
-    }
-    if (req.body.name) {
-      product.name = req.body.name;
-    }
-    if (req.body.price) {
-      product.price = req.body.price;
-    }
-    if (req.body.featured !== undefined) {
-      product.featured = req.body.featured;
-    }
-    if (req.body.rating) {
-      product.rating = req.body.rating;
-    }
-    if (req.body.company) {
-      product.company = req.body.company;
-    }
+    const product = await Product.findOneAndUpdate({productId:req.params.id},{
+        productId : req.body.productId,
+        name : req.body.name,
+        price : req.body.price,
+        featured : req.body.featured,
+        rating : req.body.rating,
+        company : req.body.company
+    });
+    //     console.log(product)
+    //     if (req.body.productId) {
+    //       product.productId = req.body.productId;
+    //     }
+    //  //   if (req.body.name) {
+    //       product.name = req.body.name;
+    //  //   }
+    //     if (req.body.price) {
+    //       product.price = req.body.price;
+    //     }
+    //     if (req.body.featured !== undefined) {
+    //       product.featured = req.body.featured;
+    //     }
+    //     if (req.body.rating) {
+    //       product.rating = req.body.rating;
+    //     }
+    //     if (req.body.company) {
+    //       product.company = req.body.company;
+    //     }
     const updatedProduct = await product.save();
+   // await product.save();
     res.json(updatedProduct);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -67,7 +101,7 @@ app.patch('/products/:id', async (req, res) => {
 // Delete a product
 app.delete('/products/:id', async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findOne({productId:req.params.id});
     await product.remove();
     res.json({ message: 'Product deleted' });
   } catch (err) {
@@ -86,3 +120,7 @@ app.get('/products/featured', async (req, res) => {
 });
 
 //
+
+app.listen(port,()=>{
+    
+})
