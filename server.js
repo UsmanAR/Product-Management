@@ -102,25 +102,7 @@ app.patch('/products/:id', async (req, res) => {
         rating : req.body.rating,
         company : req.body.company
     });
-    //     console.log(product)
-    //     if (req.body.productId) {
-    //       product.productId = req.body.productId;
-    //     }
-    //  //   if (req.body.name) {
-    //       product.name = req.body.name;
-    //  //   }
-    //     if (req.body.price) {
-    //       product.price = req.body.price;
-    //     }
-    //     if (req.body.featured !== undefined) {
-    //       product.featured = req.body.featured;
-    //     }
-    //     if (req.body.rating) {
-    //       product.rating = req.body.rating;
-    //     }
-    //     if (req.body.company) {
-    //       product.company = req.body.company;
-    //     }
+
     const updatedProduct = await product.save();
    // await product.save();
     res.json(updatedProduct);
