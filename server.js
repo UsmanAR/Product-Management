@@ -17,12 +17,13 @@ app.set('view engine','ejs');
     
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost/products', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect('mongodb://uip2ruwirwqbdcpcdnhe:K4PSSc4xb76Qh7b5ufKB@n1-c2-mongodb-clevercloud-customers.services.clever-cloud.com:27017,n2-c2-mongodb-clevercloud-customers.services.clever-cloud.com:27017/blmpxihdz56kgxn?replicaSet=rs0')
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.log(err));
+// mongoose.connect('mongodb://localhost/products', {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// })
 
 // // View products
 // app.get('/products', async (req, res) => {
